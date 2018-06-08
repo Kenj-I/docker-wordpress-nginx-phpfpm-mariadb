@@ -3,6 +3,9 @@ version: '3'
 services:
     nginx:
         build: ./build
+        # not use nginx-proxy
+        # ports:
+        #     - "8888:80"
         networks:
             - wordpress_network
             - external_nginx_proxy
@@ -11,7 +14,11 @@ services:
         volumes:
             - ./wordpress:/var/www/html
         environment:
+            # use nginx-proxy
             - VIRTUAL_HOST=$VIRTUAL_HOST
+            # if you use https
+            - CERT_NAME=default
+            # - HTTPS_METHOD=noredirect
 
     wordpress:
         image: wordpress:4.9.4-php7.1-fpm
@@ -44,6 +51,6 @@ services:
 #settin virtualhost
 networks:
     wordpress_network:
+    #use nginx proxy
     external_nginx_proxy:
-        external:
-            name: proxy_net
+        external: true
