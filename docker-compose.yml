@@ -2,7 +2,8 @@ version: '3'
 
 services:
     nginx:
-        build: ./build
+        build: ./build/nginx
+        container_name:
         # not use nginx-proxy
         # ports:
         #     - "8888:80"
@@ -19,9 +20,14 @@ services:
             # if you use https
             - CERT_NAME=default
             # - HTTPS_METHOD=noredirect
+        logging:
+            options:
+                max-size: "5m"
+                max-file: "10"
 
     wordpress:
         image: wordpress:4.9.4-php7.1-fpm
+        container_name:
         env_file: ./build/envfile
         networks:
             - wordpress_network
@@ -29,10 +35,14 @@ services:
             - db
         volumes:
             - ./wordpress:/var/www/html
+        logging:
+            options:
+                max-size: "5m"
+                max-file: "10"
 
     db:
-        image: mariadb:latest
-        env_file: ./build/envfile
+        container_name:
+        build: ./build/wordpress
         command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
         networks:
             - wordpress_network
@@ -40,6 +50,10 @@ services:
             - "$HOST_DB_PORT:3306"
         volumes:
             - ./data:/var/lib/mysql
+        logging:
+            options:
+                max-size: "5m"
+                max-file: "10"
 
 # volumes:
 #     wordpress:

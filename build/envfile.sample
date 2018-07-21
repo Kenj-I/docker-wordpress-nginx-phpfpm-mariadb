@@ -1,0 +1,6 @@
+MYSQL_ROOT_PASSWORD=root
+MYSQL_DATABASE=wordpress
+MYSQL_USER=development
+MYSQL_PASSWORD=development
+
+ENV=development
