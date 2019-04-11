@@ -15,9 +15,9 @@ services:
         volumes:
             - ./wordpress:/var/www/html
         environment:
-            # use nginx-proxy
+            # if use nginx-proxy write this
             - VIRTUAL_HOST=$VIRTUAL_HOST
-            # if you use https
+            # if you use https, write this
             - CERT_NAME=default
             # - HTTPS_METHOD=noredirect
         logging:
@@ -26,7 +26,7 @@ services:
                 max-file: "10"
 
     wordpress:
-        image: wordpress:4.9.4-php7.1-fpm
+        build : ./build/wordpress
         container_name:
         env_file: ./build/envfile
         networks:
@@ -42,7 +42,7 @@ services:
 
     db:
         container_name:
-        build: ./build/wordpress
+        build: ./build/mariadb
         command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
         networks:
             - wordpress_network
