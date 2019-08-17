@@ -3,7 +3,7 @@ version: '3'
 services:
     nginx:
         build: ./build/nginx
-        container_name: ${project_name}_nginx
+        container_name: ${COMPOSE_PROJECT_NAME}_nginx
         # not use nginx-proxy
         # ports:
         #     - "8888:80"
@@ -27,7 +27,7 @@ services:
 
     wordpress:
         build : ./build/wordpress
-        container_name: ${project_name}_wp
+        container_name: ${COMPOSE_PROJECT_NAME}_wp
         env_file: ./build/envfile
         networks:
             - wordpress_network
@@ -41,7 +41,7 @@ services:
                 max-file: "10"
 
     db:
-        container_name: ${project_name}_db
+        container_name: ${COMPOSE_PROJECT_NAME}_db
         build: ./build/mariadb
         env_file: ./build/envfile
         command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
