@@ -3,7 +3,7 @@ version: '3'
 services:
     nginx:
         build: ./build/nginx
-        container_name:
+        container_name: ${project_name}_nginx
         # not use nginx-proxy
         # ports:
         #     - "8888:80"
@@ -13,7 +13,7 @@ services:
         depends_on:
             - wordpress
         volumes:
-            - ./wordpress:/var/www/html
+            - ../wordpress:/var/www/html
         environment:
             # if use nginx-proxy write this
             - VIRTUAL_HOST=$VIRTUAL_HOST
@@ -27,21 +27,21 @@ services:
 
     wordpress:
         build : ./build/wordpress
-        container_name:
+        container_name: ${project_name}_wp
         env_file: ./build/envfile
         networks:
             - wordpress_network
         depends_on:
             - db
         volumes:
-            - ./wordpress:/var/www/html
+            - ../wordpress:/var/www/html
         logging:
             options:
                 max-size: "5m"
                 max-file: "10"
 
     db:
-        container_name:
+        container_name: ${project_name}_db
         build: ./build/mariadb
         env_file: ./build/envfile
         command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
